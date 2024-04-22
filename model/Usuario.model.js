@@ -1,0 +1,46 @@
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../services/database");
+const Gasto = require("./Gasto.model");
+const crypto = require("crypto");
+
+class Usuario extends Model {}
+
+Usuario.init(
+  {
+    ID_Usuario: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    Nombre: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    Correo: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    Objetivo_Gasto: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    Contrasena: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        set(value) {
+          const hashedPassword = crypto.createHash('md5').update(value).digest('hex');
+          this.setDataValue('contrasena', hashedPassword);
+        },
+      },
+  },
+  {
+    sequelize,
+    modelName: "Usuario",
+    tableName: "Usuario",
+  }
+);
+
+Usuario.hasMany(Gasto, { foreignKey: "ID_Usuario" });
+
+module.exports = { Usuario };

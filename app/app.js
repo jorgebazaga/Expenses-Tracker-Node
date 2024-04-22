@@ -6,3 +6,5 @@ app.use(express.json());
 app.get('/', (req, res) =>{
     res.send('This is express');
   } );  
+
+module.exports = app;
