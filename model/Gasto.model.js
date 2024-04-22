@@ -1,7 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../services/database");
-const Usuario = require("./Usuario.model");
-const Categoria = require("./Categoria.model");
 
 class Gasto extends Model {}
 
@@ -30,10 +28,8 @@ Gasto.init(
     sequelize,
     modelName: "Gasto",
     tableName: "Gasto",
+    timestamps: false,
   }
 );
-
-Gasto.belongsTo(Usuario, { foreignKey: "ID_Usuario" });
-Gasto.belongsTo(Categoria, { foreignKey: "ID_Categoria" });
 
 module.exports = { Gasto };

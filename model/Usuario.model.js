@@ -1,6 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../services/database");
-const Gasto = require("./Gasto.model");
 const crypto = require("crypto");
 
 class Usuario extends Model {}
@@ -38,9 +37,8 @@ Usuario.init(
     sequelize,
     modelName: "Usuario",
     tableName: "Usuario",
+    timestamps: false,
   }
 );
-
-Usuario.hasMany(Gasto, { foreignKey: "ID_Usuario" });
 
 module.exports = { Usuario };
