@@ -27,10 +27,6 @@ Usuario.init(
     Contrasena: {
         type: DataTypes.STRING,
         allowNull: false,
-        set(value) {
-          const hashedPassword = crypto.createHash('md5').update(value).digest('hex');
-          this.setDataValue('contrasena', hashedPassword);
-        },
       },
   },
   {
