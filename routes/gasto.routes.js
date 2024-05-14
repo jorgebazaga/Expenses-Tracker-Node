@@ -6,7 +6,7 @@ router.post("/nuevoGasto", async (req, res) => {
 });
 
 router.get("/gastos/:id", async (req, res) => {
-    PedidoController.obtenerPedidosFarma(req, res);
+    GastoController.obtenerGastosID(req, res);
   });
 
 module.exports = router;
