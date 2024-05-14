@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require("sequelize");
+const { Sequelize, Model, DataTypes } = require("sequelize");
 const sequelize = require("../services/database");
 
 class Gasto extends Model {}
@@ -7,7 +7,8 @@ Gasto.init(
   {
     ID_Gasto: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null, 
       primaryKey: true,
       autoIncrement: true,
     },
@@ -23,6 +24,10 @@ Gasto.init(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    ID_Usuario: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize,
@@ -32,4 +37,4 @@ Gasto.init(
   }
 );
 
-module.exports = { Gasto };
+module.exports = {Gasto};
