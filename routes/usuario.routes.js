@@ -10,9 +10,8 @@ router.post("/registrar", async (req, res) => {
     UsuarioController.registrarUsuario(req, res);
   });
 
-
-router.get("/protegido",[md_autenticado.asegurarAutorizacion], async (req, res) => {
-  UsuarioController.protegido(req, res);
+router.get("/autorizado",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+  res.json({ ok: true, mensaje: 'Autorizado'});
 });
 
 module.exports = router;
