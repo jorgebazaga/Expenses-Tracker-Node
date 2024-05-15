@@ -54,8 +54,23 @@ const jwt = require('../services/jwt');
     }
   }
 
+  async function buscarUsuario(req,res){
+    const {id} = req.params;
+    try {
+      const usuario = await Usuario.findByPk(id);
+      if (usuario) {
+        res.status(200).json({ ok: true, data: usuario });
+      } else {
+        res.status(404).json({ ok: false, mensaje: 'Usuario no encontrado' });
+      }
+    } catch (error) {
+      console.error('Error al buscar el usuario:', error);
+      res.status(500).json({ ok: false, mensaje: 'Error interno del servidor' });
+    }
+  }
+
   function protegido(req, res){
     res.status(200).json({ok:true, mensaje: 'Ruta protegida'});
   }
 
-  module.exports = { comprobarLogin , registrarUsuario, protegido};
+  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario};

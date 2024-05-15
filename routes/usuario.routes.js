@@ -10,6 +10,10 @@ router.post("/registrar", async (req, res) => {
     UsuarioController.registrarUsuario(req, res);
   });
 
+router.get("/usuario/:id",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+  UsuarioController.buscarUsuario(req,res);
+});
+
 router.get("/autorizado",[md_autenticado.asegurarAutorizacion], async (req, res) => {
   res.json({ ok: true, mensaje: 'Autorizado'});
 });
