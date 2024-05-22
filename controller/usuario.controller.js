@@ -12,7 +12,7 @@ const jwt = require('../services/jwt');
         const contrasenaCorrecta = await bcryptjs.compare(Contrasena, usuario.Contrasena);
         if (contrasenaCorrecta) {
           const token = jwt.generarToken(usuario, "12h");
-          res.status(200).json({ ok: true, mensaje: 'Login correcto', token });
+          res.status(200).json({ ok: true, mensaje: 'Login correcto', token , data:usuario});
         }else {
           res.status(401).json({ ok: false, mensaje: 'Error de login, usuario o contraseña incorrecto' });
         }
