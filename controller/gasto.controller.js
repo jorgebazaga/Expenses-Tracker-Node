@@ -4,7 +4,12 @@ async function crearGasto(req, res) {
 
   try {
     console.log("Body Gasto: ", req.body);
-    const nuevoGasto = await Gasto.create(req.body);
+    const idUsuario = req.params.id
+
+    const nuevoGasto = await Gasto.create({
+      ...req.body,
+      ID_Usuario: idUsuario
+    });
 
     res.status(200).json({
       ok: true,
