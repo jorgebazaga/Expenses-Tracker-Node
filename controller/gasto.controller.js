@@ -52,7 +52,31 @@ async function obtenerGastosID(req, res) {
   }
 }
 
+async function borrarGasto(req, res) {
+  try {
+    const gasto = await Gasto.destroy({
+      where: {
+        ID_Gasto: req.params.id
+      }
+    });
+    res.status(200).json({
+      ok: true,
+      status: 200,
+      message: "Gasto eliminado correctamente",
+      data: gasto
+    });
+  } catch (error) {
+    console.error("Error al eliminar el Gasto:", error);
+    res.status(500).json({
+      ok: false,
+      status: 500,
+      message: "Error interno del servidor",
+    });
+  }
+}
+
 module.exports = {
   crearGasto,
-  obtenerGastosID
+  obtenerGastosID,
+  borrarGasto
 };

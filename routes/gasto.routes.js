@@ -10,4 +10,8 @@ router.get("/gastos/:id",[md_autenticado.asegurarAutorizacion], async (req, res)
     GastoController.obtenerGastosID(req, res);
   });
 
+router.delete("/gasto/:id",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+    GastoController.borrarGasto(req, res);
+});
+
 module.exports = router;
