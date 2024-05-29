@@ -40,9 +40,13 @@ router.post("/imagenPerfil/:id",[md_autenticado.asegurarAutorizacion, upload.sin
 
 router.get('/imagenPerfil/:nombreImagen', [md_autenticado.asegurarAutorizacion], async (req, res) => {
   const nombreImagen = req.params.nombreImagen;
-  console.log("hola he entrado")
   const rutaImagen = path.join(__dirname, '../assets/imagenPerfil/', nombreImagen);
   res.sendFile(rutaImagen);
+});
+
+router.put("/actualizarPerfil",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+  console.log("holaaaa ")
+  UsuarioController.actualizarPerfil(req,res);
 });
 
 module.exports = router;

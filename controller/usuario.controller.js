@@ -95,10 +95,39 @@ const jwt = require('../services/jwt');
       res.status(500).json({ error: 'Error interno del servidor' });
     }
   }
+
+  async function actualizarPerfil(req, res) {
+    const usuarioActualizado = req.body;
+    console.log("El usuario es: ", usuarioActualizado)
+
+    console.log("El body recibido es: ", req.body)
+
+    try {
+        // Buscar el usuario por su ID
+        const usuarioExistente = await Usuario.findByPk(usuarioActualizado.ID_Usuario);
+
+        if (!usuarioExistente) {
+            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        }
+
+        // Actualizar los campos del usuario
+        usuarioExistente.Nombre = usuarioActualizado.Nombre;
+        usuarioExistente.Objetivo_Gasto = usuarioActualizado.Objetivo_Gasto;
+        usuarioExistente.Correo = usuarioActualizado.Correo;
+
+        // Guardar el usuario actualizado en la base de datos
+        const usuarioGuardado = await usuarioExistente.save();
+
+        res.status(200).json({ mensaje: 'Usuario actualizado correctamente', usuario: usuarioGuardado });
+    } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
+}
   
   function protegido(req, res){
     res.status(200).json({ok:true, mensaje: 'Ruta protegida'});
     
   }
 
-  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario,subirImagenPerfil};
+  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario,subirImagenPerfil,actualizarPerfil};
