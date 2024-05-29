@@ -25,9 +25,13 @@ Usuario.init(
       allowNull: true,
     },
     Contrasena: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    ImagenPerfil: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     sequelize,

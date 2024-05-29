@@ -69,8 +69,36 @@ const jwt = require('../services/jwt');
     }
   }
 
+  async function subirImagenPerfil(req, res, nombreImagen) {
+    const { id } = req.params;
+  
+    try {
+      // Encuentra el usuario por su ID
+      const usuario = await Usuario.findByPk(id);
+  
+      if (!usuario) {
+        // Si el usuario no existe, responde con un error
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+  
+      // Asigna la ruta de la imagen a la propiedad ImagenPerfil del usuario
+      usuario.ImagenPerfil = nombreImagen;
+  
+      // Guarda los cambios en la base de datos
+      await usuario.save();
+  
+      // Responde con éxito
+      res.status(200).json({ message: 'Imagen de perfil actualizada correctamente', usuario });
+    } catch (error) {
+      // Maneja cualquier error que ocurra
+      console.error('Error al subir la imagen de perfil:', error);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+  
   function protegido(req, res){
     res.status(200).json({ok:true, mensaje: 'Ruta protegida'});
+    
   }
 
-  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario};
+  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario,subirImagenPerfil};
