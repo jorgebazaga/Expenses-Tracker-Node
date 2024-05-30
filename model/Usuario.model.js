@@ -32,6 +32,10 @@ Usuario.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    Administrador: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
   },
   {
     sequelize,
