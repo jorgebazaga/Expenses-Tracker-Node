@@ -45,8 +45,11 @@ router.get('/imagenPerfil/:nombreImagen', [md_autenticado.asegurarAutorizacion],
 });
 
 router.put("/actualizarPerfil",[md_autenticado.asegurarAutorizacion], async (req, res) => {
-  console.log("holaaaa ")
   UsuarioController.actualizarPerfil(req,res);
+});
+
+router.get("/usuarios",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+  UsuarioController.obtenerUsuarios(req,res);
 });
 
 module.exports = router;

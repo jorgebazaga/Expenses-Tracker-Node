@@ -124,10 +124,21 @@ const jwt = require('../services/jwt');
         res.status(500).json({ mensaje: 'Error interno del servidor' });
     }
 }
+
+async function obtenerUsuarios(req, res) {
+  try {
+      const usuarios = await Usuario.findAll();
+
+      res.status(200).json({ mensaje: 'Usuarios obtenidos correctamente', usuarios });
+  } catch (error) {
+      console.error('Error al obtener los usuarios:', error);
+      res.status(500).json({ mensaje: 'Error interno del servidor' });
+  }
+}
   
   function protegido(req, res){
     res.status(200).json({ok:true, mensaje: 'Ruta protegida'});
     
   }
 
-  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario,subirImagenPerfil,actualizarPerfil};
+  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario,subirImagenPerfil,actualizarPerfil,obtenerUsuarios};
