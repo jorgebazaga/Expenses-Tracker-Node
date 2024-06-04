@@ -135,10 +135,56 @@ async function obtenerUsuarios(req, res) {
       res.status(500).json({ mensaje: 'Error interno del servidor' });
   }
 }
+
+async function editarUsuario(req, res) {
+  const usuarioActualizado = req.body;
+  const { id } = req.params;
+
+  try {
+      // Buscar el usuario por su ID
+      const usuarioExistente = await Usuario.findByPk(id);
+
+      if (!usuarioExistente) {
+          return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+
+      // Actualizar los campos del usuario
+      usuarioExistente.Nombre = usuarioActualizado.Nombre;
+      usuarioExistente.Objetivo_Gasto = usuarioActualizado.Objetivo;
+      usuarioExistente.Correo = usuarioActualizado.Correo;
+      usuarioExistente.ID_Usuario = usuarioActualizado.ID_Usuario; 
+
+      const usuarioGuardado = await usuarioExistente.save();
+
+      res.status(200).json({ mensaje: 'Usuario actualizado correctamente', usuario: usuarioGuardado });
+  }catch (error) {
+      console.error('Error al actualizar el usuario:', error);
+      res.status(500).json({ mensaje: 'Error interno del servidor' });
+  }
+}
+
+async function borrarUsuario(req, res) {
+  const { id } = req.params;
+
+  try {
+      const usuario = await Usuario.findByPk(id);
+
+      if (!usuario) {
+          return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+
+      await usuario.destroy();
+
+      res.status(200).json({ mensaje: 'Usuario eliminado correctamente' });
+  } catch (error) {
+      console.error('Error al borrar el usuario:', error);
+      res.status(500).json({ mensaje: 'Error interno del servidor' });
+  }
+}
   
   function protegido(req, res){
     res.status(200).json({ok:true, mensaje: 'Ruta protegida'});
     
   }
 
-  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario,subirImagenPerfil,actualizarPerfil,obtenerUsuarios};
+  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario,subirImagenPerfil,actualizarPerfil,obtenerUsuarios,editarUsuario,borrarUsuario};

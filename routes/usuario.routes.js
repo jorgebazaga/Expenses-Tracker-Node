@@ -52,4 +52,13 @@ router.get("/usuarios",[md_autenticado.asegurarAutorizacion], async (req, res) =
   UsuarioController.obtenerUsuarios(req,res);
 });
 
+router.put("/editarUsuario/:id",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+  UsuarioController.editarUsuario(req,res);
+});
+
+router.delete("/usuario/:id",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+  UsuarioController.borrarUsuario(req,res);
+});
+
+
 module.exports = router;
