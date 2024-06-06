@@ -17,15 +17,27 @@ async function exportarPDF(req, res) {
     try {
         const usuario = await Usuario.findByPk(req.params.id);
         const { ID_Categoria, Mes } = req.body;
+        const currentYear = new Date().getFullYear(); // Obtén el año actual
+        
+        let whereConditions = {
+          [Op.and]: [Sequelize.literal(`YEAR(Fecha) = ${currentYear}`)] // Año actual es siempre parte de la condición
+        };
+        
+        // Añade condiciones adicionales basadas en los valores de ID_Categoria y Mes
+        if (ID_Categoria) {
+          whereConditions.ID_Categoria = ID_Categoria;
+        }
+        if (Mes) {
+          whereConditions[Op.and].push(Sequelize.literal(`MONTH(Fecha) = ${Mes}`));
+        }
+        
+        // Realiza la consulta con las condiciones dinámicas
         const gastos = await Gasto.findAll({
-            where: {
-              ID_Categoria: ID_Categoria,
-              [Op.and]: [
-                Sequelize.where(Sequelize.fn('EXTRACT', Sequelize.literal('MONTH FROM "Fecha"')), Mes)
-              ]
-            }
-          });
-        console.log(gastos,"gastos");
+          where: whereConditions
+        });
+
+        console.log(gastos);
+        
         // console.log(req.body,"datos");
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
