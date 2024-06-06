@@ -3,6 +3,7 @@ const app = express();
 const usuarioRoutes = require('../routes/usuario.routes');
 const gastoRoutes = require('../routes/gasto.routes');
 const categoriaRoutes = require('../routes/categoria.routes');
+const pdfRoutes = require('../routes/pdf.routes');
 const cors = require('cors');
 
 app.use(express.json());
@@ -15,6 +16,7 @@ app.get('/', (req, res) =>{
 app.use("/",usuarioRoutes);
 app.use("/",gastoRoutes);
 app.use("/",categoriaRoutes);
+app.use("/",pdfRoutes);
 
 
 module.exports = app;
