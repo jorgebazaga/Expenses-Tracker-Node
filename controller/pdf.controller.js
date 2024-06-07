@@ -70,7 +70,16 @@ async function exportarPDF(req, res) {
         // Calcular el total de los gastos
         const totalGastos = gastos.reduce((acc, gasto) => acc + Number(gasto.Cantidad), 0);
 
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            headless: true, // Usar Chromium sin cabeza
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-accelerated-2d-canvas',
+                '--disable-gpu'
+            ]
+        });
         const page = await browser.newPage();
 
         const html = `
@@ -192,10 +201,11 @@ async function exportarPDF(req, res) {
 
         await browser.close();
 
-        // Enviar el PDF en la respuesta para su descarga
-        res.setHeader('Content-Disposition', 'attachment; filename=factura.pdf');
+        // Enviar el PDF como respuesta para descarga
         res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=output.pdf');
         res.send(pdfBuffer);
+
         console.log('PDF creado con éxito!');
     } catch (error) {
         console.error('Error creando PDF:', error);
@@ -204,5 +214,5 @@ async function exportarPDF(req, res) {
 }
 
 module.exports = {
-    exportarPDF
+  exportarPDF
 };
