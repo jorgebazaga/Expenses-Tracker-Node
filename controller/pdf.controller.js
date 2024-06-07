@@ -4,7 +4,7 @@ const { Gasto } = require('../model/Gasto.model');
 const { Categoria } = require('../model/Categoria.model');
 const { Op, Sequelize } = require('sequelize');
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 
 function fechaHoy() {
     const today = new Date();
@@ -22,39 +22,36 @@ async function exportarPDF(req, res) {
         const logoBase64 = fs.readFileSync(path.resolve('./assets/images/logoNegro.png'), 'base64');
         const logoSrc = `data:image/png;base64,${logoBase64}`;
 
-        
         let whereConditions = {
-          [Op.and]: [Sequelize.literal(`YEAR(Fecha) = ${currentYear}`)] // Año actual es siempre parte de la condición
+            [Op.and]: [Sequelize.literal(`YEAR(Fecha) = ${currentYear}`)] // Año actual es siempre parte de la condición
         };
-        
+
         // Añade condiciones adicionales basadas en los valores de ID_Categoria y Mes
         if (ID_Categoria) {
-          whereConditions.ID_Categoria = ID_Categoria;
+            whereConditions.ID_Categoria = ID_Categoria;
         }
         if (Mes) {
-          whereConditions[Op.and].push(Sequelize.literal(`MONTH(Fecha) = ${Mes}`));
+            whereConditions[Op.and].push(Sequelize.literal(`MONTH(Fecha) = ${Mes}`));
         }
-        
+
         // Realiza la consulta con las condiciones dinámicas
         const gastos = await Gasto.findAll({
-          where: whereConditions
+            where: whereConditions
         });
-
-        console.log(gastos);
 
         const categorias = await Categoria.findAll();
 
         // Crea un mapa de ID_Categoria a Nombre
         const categoriaMap = {};
         categorias.forEach(categoria => {
-        categoriaMap[categoria.ID_Categoria] = categoria.Nombre;
+            categoriaMap[categoria.ID_Categoria] = categoria.Nombre;
         });
-        
+
         // Añade el nombre de la categoría a cada gasto
         const gastosConNombres = gastos.map(gasto => {
             return {
-            ...gasto.dataValues,
-            NombreCategoria: categoriaMap[gasto.ID_Categoria]
+                ...gasto.dataValues,
+                NombreCategoria: categoriaMap[gasto.ID_Categoria]
             };
         });
 
@@ -72,8 +69,7 @@ async function exportarPDF(req, res) {
 
         // Calcular el total de los gastos
         const totalGastos = gastos.reduce((acc, gasto) => acc + Number(gasto.Cantidad), 0);
-        
-        // console.log(req.body,"datos");
+
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
 
@@ -187,10 +183,6 @@ async function exportarPDF(req, res) {
         </html>
 `;
 
-        /* const htmlModificado = html.replace('{{nombre}}', )
-        .replace('{{correo}}', usuario.Correo)
-        .replace('{{tablaGastos}}', tablaGastos); */
-
         await page.setContent(html, { waitUntil: 'domcontentloaded' });
 
         const pdfBuffer = await page.pdf({
@@ -200,13 +192,17 @@ async function exportarPDF(req, res) {
 
         await browser.close();
 
-        fs.writeFileSync('output.pdf', pdfBuffer);
+        // Enviar el PDF en la respuesta para su descarga
+        res.setHeader('Content-Disposition', 'attachment; filename=factura.pdf');
+        res.setHeader('Content-Type', 'application/pdf');
+        res.send(pdfBuffer);
         console.log('PDF creado con éxito!');
     } catch (error) {
         console.error('Error creando PDF:', error);
+        res.status(500).send('Error creando PDF');
     }
 }
 
 module.exports = {
-  exportarPDF
+    exportarPDF
 };
