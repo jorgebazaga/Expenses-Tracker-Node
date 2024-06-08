@@ -4,17 +4,19 @@ const { Gasto } = require('../model/Gasto.model');
 const { Categoria } = require('../model/Categoria.model');
 const { Op, Sequelize } = require('sequelize');
 
-async function exportToExcel(sheetName) {
+async function exportToExcel(req, res, sheetName) {
     try {
-        const usuario = await Usuario.findByPk(2);
-        const ID_Categoria = 2;
-        const Mes = 6;
+        const usuario = await Usuario.findByPk(req.params.id);
+        const { ID_Categoria, Mes } = req.body;
         const currentYear = new Date().getFullYear(); // Obtén el año actual
-
+        
         let whereConditions = {
-            [Op.and]: [Sequelize.literal(`YEAR(Fecha) = ${currentYear}`)] // Año actual es siempre parte de la condición
+            [Op.and]: [
+                Sequelize.literal(`YEAR(Fecha) = ${currentYear}`), // Año actual es siempre parte de la condición
+                { ID_Usuario: usuario.ID_Usuario } // Asegúrate de que el ID del usuario esté en las condiciones
+            ]
         };
-
+        
         // Añade condiciones adicionales basadas en los valores de ID_Categoria y Mes
         if (ID_Categoria) {
             whereConditions.ID_Categoria = ID_Categoria;
@@ -22,7 +24,7 @@ async function exportToExcel(sheetName) {
         if (Mes) {
             whereConditions[Op.and].push(Sequelize.literal(`MONTH(Fecha) = ${Mes}`));
         }
-
+        
         // Realiza la consulta con las condiciones dinámicas
         const gastos = await Gasto.findAll({
             where: whereConditions
@@ -34,7 +36,7 @@ async function exportToExcel(sheetName) {
         // Crear un mapa de ID_Categoria a Nombre
         const categoriaMap = {};
         categorias.forEach(categoria => {
-            categoriaMap[categoria.ID] = categoria.Nombre; // Asegúrate de usar la clave correcta
+            categoriaMap[categoria.ID_Categoria] = categoria.Nombre; // Asegúrate de usar la clave correcta
         });
 
         // Añadir el nombre de la categoría a cada gasto
@@ -69,17 +71,20 @@ async function exportToExcel(sheetName) {
             });
         });
 
-        // Escribir el libro de trabajo a un archivo
-        await workbook.xlsx.writeFile('data.xlsx');
+        // Escribir el libro de trabajo a un buffer
+        const buffer = await workbook.xlsx.writeBuffer();
 
-        console.log('Archivo Excel creado exitosamente');
+        // Configurar la respuesta para la descarga del archivo
+        res.setHeader('Content-Disposition', 'attachment; filename="gastos.xlsx"');
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.send(buffer);
+
+        console.log('Archivo Excel enviado exitosamente');
     } catch (error) {
         console.error('Error al crear el archivo Excel:', error);
+        res.status(500).send('Error al crear el archivo Excel');
     }
 }
-
-// Ejemplo de uso
-exportToExcel('Sheet1');
 
 module.exports = {
     exportToExcel

@@ -21,11 +21,14 @@ async function exportarPDF(req, res) {
         const currentYear = new Date().getFullYear(); // Obtén el año actual
         const logoBase64 = fs.readFileSync(path.resolve('./assets/images/logoNegro.png'), 'base64');
         const logoSrc = `data:image/png;base64,${logoBase64}`;
-
+        
         let whereConditions = {
-            [Op.and]: [Sequelize.literal(`YEAR(Fecha) = ${currentYear}`)] // Año actual es siempre parte de la condición
+            [Op.and]: [
+                Sequelize.literal(`YEAR(Fecha) = ${currentYear}`), // Año actual es siempre parte de la condición
+                { ID_Usuario: usuario.ID_Usuario } // Asegúrate de que el ID del usuario esté en las condiciones
+            ]
         };
-
+        
         // Añade condiciones adicionales basadas en los valores de ID_Categoria y Mes
         if (ID_Categoria) {
             whereConditions.ID_Categoria = ID_Categoria;
@@ -33,6 +36,7 @@ async function exportarPDF(req, res) {
         if (Mes) {
             whereConditions[Op.and].push(Sequelize.literal(`MONTH(Fecha) = ${Mes}`));
         }
+        
 
         // Realiza la consulta con las condiciones dinámicas
         const gastos = await Gasto.findAll({
