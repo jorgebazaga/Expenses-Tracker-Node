@@ -61,6 +61,11 @@ async function exportToExcel(req, res, sheetName) {
             { header: 'Cantidad', key: 'Cantidad' }
         ];
 
+        // Estilizar los encabezados
+        worksheet.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
         // Añadir filas
         gastosConNombres.forEach(gasto => {
             worksheet.addRow({
