@@ -157,8 +157,6 @@ router.post("/nuevoGasto/:id",[md_autenticado.asegurarAutorizacion], async (req,
  *                   type: string
  *                   example: Error interno del servidor
  */
-
-
 router.get("/gastos/:id",[md_autenticado.asegurarAutorizacion], async (req, res) => {
     GastoController.obtenerGastosID(req, res);
 });
