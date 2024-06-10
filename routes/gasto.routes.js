@@ -91,20 +91,20 @@ router.post("/nuevoGasto/:id",[md_autenticado.asegurarAutorizacion], async (req,
 
 /**
  * @swagger
- * /gasto/{id}:
+ * /gastos/{id}:
  *   get:
- *     summary: Obtener un gasto por ID
- *     description: Obtiene un gasto específico por su ID.
+ *     summary: Obtener gastos por ID de usuario
+ *     description: Obtiene los gastos de un usuario específico por su ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID del gasto a obtener
+ *         description: ID del usuario
  *         schema:
  *           type: integer
  *     responses:
- *       200:
- *         description: Gasto obtenido correctamente.
+ *       '200':
+ *         description: Gastos obtenidos correctamente.
  *         content:
  *           application/json:
  *             schema:
@@ -118,27 +118,29 @@ router.post("/nuevoGasto/:id",[md_autenticado.asegurarAutorizacion], async (req,
  *                   example: 200
  *                 message:
  *                   type: string
- *                   example: Gasto obtenido correctamente
+ *                   example: Gastos obtenidos correctamente
  *                 data:
- *                   type: object
- *                   properties:
- *                     ID_Gasto:
- *                       type: integer
- *                       example: 1
- *                     Cantidad:
- *                       type: string
- *                       example: 50
- *                     Fecha:
- *                       type: string
- *                       format: date
- *                       example: "2024-06-10"
- *                     Descripcion:
- *                       type: string
- *                       example: Comida
- *                     ID_Usuario:
- *                       type: integer
- *                       example: 123
- *       500:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       ID_Gasto:
+ *                         type: integer
+ *                         example: 1
+ *                       Cantidad:
+ *                         type: string
+ *                         example: '50'
+ *                       Fecha:
+ *                         type: string
+ *                         format: date
+ *                         example: '2024-06-10'
+ *                       Descripcion:
+ *                         type: string
+ *                         example: Comida
+ *                       ID_Usuario:
+ *                         type: integer
+ *                         example: 123
+ *       '500':
  *         description: Error interno del servidor.
  *         content:
  *           application/json:
@@ -156,8 +158,9 @@ router.post("/nuevoGasto/:id",[md_autenticado.asegurarAutorizacion], async (req,
  *                   example: Error interno del servidor
  */
 
-router.get("/gasto/:id",[md_autenticado.asegurarAutorizacion], async (req, res) => {
-    GastoController.obtenerGastoID(req, res);
+
+router.get("/gastos/:id",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+    GastoController.obtenerGastosID(req, res);
 });
 
 /**
