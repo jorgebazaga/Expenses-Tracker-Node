@@ -98,9 +98,6 @@ const jwt = require('../services/jwt');
 
   async function actualizarPerfil(req, res) {
     const usuarioActualizado = req.body;
-    console.log("El usuario es: ", usuarioActualizado)
-
-    console.log("El body recibido es: ", req.body)
 
     try {
         // Buscar el usuario por su ID
