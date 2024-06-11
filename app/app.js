@@ -5,6 +5,7 @@ const gastoRoutes = require('../routes/gasto.routes');
 const categoriaRoutes = require('../routes/categoria.routes');
 const pdfRoutes = require('../routes/pdf.routes');
 const excelRoutes = require('../routes/excel.routes');
+const correoRoutes  = require('../routes/correo.routes');
 const cors = require('cors');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -45,5 +46,6 @@ app.use('/', gastoRoutes);
 app.use('/', categoriaRoutes);
 app.use('/', pdfRoutes);
 app.use('/', excelRoutes);
+app.use('/', correoRoutes);
 
 module.exports = app;

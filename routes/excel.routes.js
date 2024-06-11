@@ -73,5 +73,8 @@ router.post("/exportarexcel/:id",[md_autenticado.asegurarAutorizacion], async (r
     ExcelController.exportToExcel(req, res);
 });
 
+router.post("/exportarcsv/:id",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+    ExcelController.exportToCSV(req, res);
+});
 
 module.exports = router;
