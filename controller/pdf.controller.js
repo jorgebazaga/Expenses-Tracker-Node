@@ -46,7 +46,9 @@ async function exportarPDF(req, res) {
         // Verifica si el array de gastos está vacío
         if (gastos.length === 0) {
             // Si no hay gastos, envía un mensaje de advertencia al frontend
+            console.log('No hay datos para exportar WARINING');
             return res.status(400).json({ message: 'No hay datos para exportar', gastos: [] });
+            
         }
 
         const categorias = await Categoria.findAll();
@@ -72,8 +74,8 @@ async function exportarPDF(req, res) {
             tablaGastos += `
             <tr>
                 <td>${gasto.Descripcion}</td>
-                <td>${gasto.Fecha}</td>
                 <td>${gasto.FechaFormateada}</td>
+                <td>${gasto.NombreCategoria}</td>
                 <td>${gasto.Cantidad} €</td>
             </tr>
             `;
