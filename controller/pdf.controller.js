@@ -45,7 +45,8 @@ async function exportarPDF(req, res) {
 
         // Verifica si el array de gastos está vacío
         if (gastos.length === 0) {
-            return res.status(400).send('No hay datos para exportar');
+            // Si no hay gastos, envía un mensaje de advertencia al frontend
+            return res.status(400).json({ message: 'No hay datos para exportar', gastos: [] });
         }
 
         const categorias = await Categoria.findAll();
@@ -60,7 +61,9 @@ async function exportarPDF(req, res) {
         const gastosConNombres = gastos.map(gasto => {
             return {
                 ...gasto.dataValues,
-                NombreCategoria: categoriaMap[gasto.ID_Categoria]
+                NombreCategoria: categoriaMap[gasto.ID_Categoria],
+                // Formatea la fecha en el formato día/mes/año
+                FechaFormateada: new Date(gasto.Fecha).toLocaleDateString('es-ES')
             };
         });
 
@@ -70,7 +73,7 @@ async function exportarPDF(req, res) {
             <tr>
                 <td>${gasto.Descripcion}</td>
                 <td>${gasto.Fecha}</td>
-                <td>${gasto.NombreCategoria}</td>
+                <td>${gasto.FechaFormateada}</td>
                 <td>${gasto.Cantidad} €</td>
             </tr>
             `;

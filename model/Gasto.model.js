@@ -13,7 +13,7 @@ Gasto.init(
       autoIncrement: true,
     },
     Cantidad: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     Fecha: {

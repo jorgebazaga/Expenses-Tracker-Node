@@ -30,6 +30,11 @@ async function exportToExcel(req, res, sheetName) {
             where: whereConditions
         });
 
+        if (gastos.length === 0) {
+            // Si no hay gastos, envía un mensaje de advertencia al frontend
+            return res.status(400).json({ message: 'No hay datos para exportar', gastos: [] });
+        }
+
         // Obtener todas las categorías
         const categorias = await Categoria.findAll();
 

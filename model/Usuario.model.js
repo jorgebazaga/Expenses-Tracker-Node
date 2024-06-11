@@ -21,7 +21,7 @@ Usuario.init(
       allowNull: true,
     },
     Objetivo_Gasto: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
     Contrasena: {
