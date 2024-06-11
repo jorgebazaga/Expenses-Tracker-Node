@@ -6,6 +6,7 @@ async function crearGasto(req, res) {
     console.log("Body Gasto: ", req.body);
     const idUsuario = req.params.id
 
+    console.log("EL nuevo gasto es: ", req.body)
     const nuevoGasto = await Gasto.create({
       ...req.body,
       ID_Usuario: idUsuario
