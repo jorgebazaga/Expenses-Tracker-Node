@@ -43,6 +43,11 @@ async function exportarPDF(req, res) {
             where: whereConditions
         });
 
+        // Verifica si el array de gastos está vacío
+        if (gastos.length === 0) {
+            return res.status(400).send('No hay datos para exportar');
+        }
+
         const categorias = await Categoria.findAll();
 
         // Crea un mapa de ID_Categoria a Nombre

@@ -1,0 +1,10 @@
+{
+  "host": "mail.smtp2go.com",
+  "port": 8465,
+  "secure": true,
+  "auth": {
+    "user": "farmacia",
+    "pass": "E2ZfI9Y5FbWCWEIc"
+  },
+  "from": "jbazsar1809@g.educaand.es"
+}
