@@ -665,4 +665,10 @@ router.delete("/usuario/:id",[md_autenticado.asegurarAutorizacion], async (req, 
 });
 
 
+router.put("/cambiar-contrasena",[md_autenticado.asegurarAutorizacion], async (req, res) => {
+  console.log("cambiar contraseña");
+  UsuarioController.cambiarContrasena(req, res);
+});
+
+
 module.exports = router;

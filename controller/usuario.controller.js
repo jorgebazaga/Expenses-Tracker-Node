@@ -178,10 +178,35 @@ async function borrarUsuario(req, res) {
       res.status(500).json({ mensaje: 'Error interno del servidor' });
   }
 }
+
+async function cambiarContrasena(req, res) {
+  const { token, contrasena } = req.body;
+
+  try {
+    console.log("Hola he entrado aqui")
+    const decoded = jwt.decodificarToken(token);
+    const usuario = await Usuario.findByPk(decoded.ID_Usuario);
+
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    const salt = bcryptjs.genSaltSync(10); 
+    usuario.Contrasena = await bcryptjs.hash(contrasena, salt);
+    console.log(usuario)
+    await usuario.save();
+
+    res.status(200).json({ mensaje: 'Contraseña cambiada' });
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ message: 'Token invalido' });
+
+  }
+}
   
   function protegido(req, res){
     res.status(200).json({ok:true, mensaje: 'Ruta protegida'});
     
   }
 
-  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario,subirImagenPerfil,actualizarPerfil,obtenerUsuarios,editarUsuario,borrarUsuario};
+  module.exports = { comprobarLogin , registrarUsuario, protegido, buscarUsuario,subirImagenPerfil,actualizarPerfil,obtenerUsuarios,editarUsuario,borrarUsuario,cambiarContrasena};

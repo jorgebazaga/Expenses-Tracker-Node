@@ -1,0 +1,6 @@
+{
+    "production": false,
+    "urlAngular": "http://localhost:4200/",
+    "urlNode": "http://localhost:3000/"
+  }
+  

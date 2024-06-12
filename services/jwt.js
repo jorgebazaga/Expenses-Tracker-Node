@@ -3,9 +3,9 @@ const jwt = require('jsonwebtoken');
 const CLAVE_SECRETA = "hd5Gjd93QAsdns7asGHsSsbdka3faO924";
 
 function generarToken(usuario, fechaExpiracion){
-    const {Id_Usuario,Correo} = usuario;
+    const {ID_Usuario,Correo} = usuario;
     const payload = {
-        Id_Usuario,
+        ID_Usuario,
         Correo
     }
 

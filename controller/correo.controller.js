@@ -1,5 +1,8 @@
 const fs = require('fs').promises;
 const { getTransporter } = require("../services/mail");
+const jwt = require("../services/jwt.js");
+const {Usuario} = require("../model/Asociaciones.model");
+const bcryptjs = require("bcryptjs");
 
 async function enviarCorreo(req, res) {
     try {
@@ -45,6 +48,45 @@ async function enviarCorreo(req, res) {
     enviarCorreo(req,res)
 }
 
+async function olvidoContrasena(req, res) {
+    const { correo } = req.body;
+
+    const usuario = await Usuario.findOne({ where: { Correo: correo } });
+
+    const environmentData = await fs.readFile('environments/environment.json', 'utf8');
+    const environment = JSON.parse(environmentData);
+    console.log("Environment: ", environment.urlAngular);
+
+    if (!usuario) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+      
+    const token = jwt.generarToken(usuario, '1h');
+    
+    
+    const transporter = await getTransporter();
+
+        const jsonData = await fs.readFile('mail.config.json');
+        const config = JSON.parse(jsonData);
+
+        const mailOptions = {
+            from: config.from,
+            to: usuario.Correo,
+            subject: 'Recuperación de contraseña',
+            html: `<p>Para resetear tu contraseña, por favor haz clic en el siguiente enlace: 
+                    <a href="${environment.urlAngular}cambiar-contrasena/${token}">Resetear contraseña</a></p>`,
+        };
+
+        try {
+            await transporter.sendMail(mailOptions);
+            res.status(200).json({ message: 'Correo para recuperar contraseña enviado' });
+          } catch (error) {
+            res.status(500).json({ message: 'Error al enviar el correo' });
+          }
+}
+
+
 module.exports = {
     enviarCorreo, 
+    olvidoContrasena
 };
