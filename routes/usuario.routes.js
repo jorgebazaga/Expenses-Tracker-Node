@@ -664,7 +664,50 @@ router.delete("/usuario/:id",[md_autenticado.asegurarAutorizacion], async (req, 
   UsuarioController.borrarUsuario(req,res);
 });
 
-
+/**
+ * @swagger
+ * /cambiar-contrasena:
+ *   put:
+ *     summary: Cambiar contraseña del usuario.
+ *     description: |
+ *       Permite al usuario cambiar su contraseña utilizando un token de autenticación.
+ *       
+ *       El endpoint espera recibir un objeto JSON en el cuerpo de la solicitud con las siguientes propiedades:
+ *       - token: Token de autenticación del usuario.
+ *       - contrasena: Nueva contraseña del usuario.
+ *       
+ *       En caso de éxito, la contraseña del usuario se actualizará en la base de datos y se enviará una respuesta con un código 200.
+ *       
+ *       Respuestas posibles:
+ *       - 200: Contraseña cambiada exitosamente.
+ *       - 400: Error al intentar cambiar la contraseña. El token proporcionado es inválido.
+ *       - 404: No se encontró el usuario asociado al token proporcionado.
+ *     security:
+ *       - BearerAuth: [] # Se espera que la solicitud incluya un token de autenticación en el encabezado 'Authorization'.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 description: Token de autenticación del usuario.
+ *               contrasena:
+ *                 type: string
+ *                 description: Nueva contraseña del usuario.
+ *             required:
+ *               - token
+ *               - contrasena
+ *     responses:
+ *       200:
+ *         description: Contraseña cambiada exitosamente.
+ *       400:
+ *         description: Error al intentar cambiar la contraseña. El token proporcionado es inválido.
+ *       404:
+ *         description: No se encontró el usuario asociado al token proporcionado.
+ */
 router.put("/cambiar-contrasena",[md_autenticado.asegurarAutorizacion], async (req, res) => {
   console.log("cambiar contraseña");
   UsuarioController.cambiarContrasena(req, res);

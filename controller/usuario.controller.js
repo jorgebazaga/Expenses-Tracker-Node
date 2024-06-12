@@ -183,7 +183,6 @@ async function cambiarContrasena(req, res) {
   const { token, contrasena } = req.body;
 
   try {
-    console.log("Hola he entrado aqui")
     const decoded = jwt.decodificarToken(token);
     const usuario = await Usuario.findByPk(decoded.ID_Usuario);
 
