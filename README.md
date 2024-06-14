@@ -42,6 +42,9 @@ Nuestro objetivo con este proyecto es ayudar a las personas a llevar un seguimie
 ## PDF Diseño
 [Diseño de interfaces-TFG.pdf](https://github.com/user-attachments/files/15821713/Diseno.de.interfaces-TFG.pdf)
 
+## Documentación EndPoints
+[Enlace documentación api](https://expenses.duckdns.org:3001/api-docs/)
+
 ## Diario
 [Diario TFG.pdf](https://github.com/user-attachments/files/15821994/Diario.TFG.pdf)
 
