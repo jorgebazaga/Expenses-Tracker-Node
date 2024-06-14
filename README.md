@@ -34,7 +34,8 @@ Nuestro objetivo con este proyecto es ayudar a las personas a llevar un seguimie
 [![video](https://img.youtube.com/vi/GJz5kDEvBQ4/0.jpg)](https://www.youtube.com/watch?v=GJz5kDEvBQ4)
 
 ## PDF Presentación
-[PresentacionTFG.pdf](https://github.com/user-attachments/files/15821719/PresentacionTFG.pdf)
+[PresentacionTFG-1.pdf](https://github.com/user-attachments/files/15836833/PresentacionTFG-1.pdf)
+
 
 ## Enlace Diseño Figma
 [Enlace a Figma](https://www.figma.com/design/hP7ZODTTjuwnoHhOQ42ayR/Expenses-Tracker?node-id=1-2&t=YhMOl2LjSQHeiaV4-1)
